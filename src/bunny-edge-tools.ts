@@ -54,8 +54,7 @@ export type ProvisionBunnyEdgeUploadSignerFailure = {
 };
 
 export type ProvisionBunnyEdgeUploadSignerResult =
-  | ProvisionBunnyEdgeUploadSignerSuccess
-  | ProvisionBunnyEdgeUploadSignerFailure;
+  ProvisionBunnyEdgeUploadSignerSuccess | ProvisionBunnyEdgeUploadSignerFailure;
 
 type NormalizedProvisionOptions = {
   bunnyAccountApiKey: string;
@@ -242,12 +241,18 @@ async function bunnyApi<T>(
   init: RequestInit,
   okStatuses: number[],
 ): Promise<{ ok: true; value: T } | { ok: false; error: BunnyApiFailure }> {
+  // HeadersInit may also be a Headers instance or tuples; spreading those into
+  // an object literal would silently drop the caller's headers.
+  const callerHeaders =
+    init.headers instanceof Headers || Array.isArray(init.headers)
+      ? Object.fromEntries(new Headers(init.headers))
+      : init.headers;
   const response = await options.fetch(`${BUNNY_API_BASE_URL}${path}`, {
     ...init,
     headers: {
       AccessKey: options.bunnyAccountApiKey,
       "Content-Type": "application/json",
-      ...init.headers,
+      ...callerHeaders,
     },
   });
 

@@ -24,6 +24,9 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
+        env:
+          # @celados/harness comes from npm.celados.com (.npmrc).
+          CELADOS_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: bun install --frozen-lockfile --ignore-scripts
 
       - name: Check

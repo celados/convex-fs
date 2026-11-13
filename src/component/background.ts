@@ -68,7 +68,7 @@ export const deleteUploadRecords = internalMutation({
   returns: v.null(),
   handler: async (ctx, args) => {
     for (const id of args.ids) {
-      await ctx.db.delete(id);
+      await ctx.db.delete("uploads", id);
     }
     return null;
   },
@@ -217,7 +217,7 @@ export const deleteBlobRecords = internalMutation({
   returns: v.null(),
   handler: async (ctx, args) => {
     for (const id of args.ids) {
-      await ctx.db.delete(id);
+      await ctx.db.delete("blobs", id);
     }
     return null;
   },

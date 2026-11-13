@@ -24,13 +24,14 @@
     "build": "tsc --project ./tsconfig.build.json",
     "build:codegen": "bunx convex codegen --component-dir ./src/component && bun run build",
     "build:clean": "rm -rf dist *.tsbuildinfo && bun run build:codegen",
-    "typecheck": "tsc --noEmit && tsc -p example && tsc -p example/convex",
-    "check": "bun run build && bun run test && bun run typecheck",
+    "typecheck": "harness typecheck",
+    "check": "bun run build && vp lint && harness typecheck && fallow dead-code && bun run test",
     "all": "run-p -r dev:backend dev:frontend test:watch",
     "test": "vitest run --typecheck",
     "test:watch": "vitest --typecheck --clearScreen false",
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
-    "test:coverage": "vitest run --coverage --coverage.reporter=text"
+    "test:coverage": "vitest run --coverage --coverage.reporter=text",
+    "prepare": "vp config"
   },
   "files": [
     "dist",
@@ -72,10 +73,12 @@
     "ulid": "^3.0.2"
   },
   "peerDependencies": {
-    "convex": "^1.29.3",
+    "convex": "^1.31.0",
     "react": "^18.3.1 || ^19.0.0"
   },
   "devDependencies": {
+    "@celados/harness": "^0.1.3",
+    "@convex-dev/eslint-plugin": "^5.0.1",
     "@edge-runtime/vm": "^5.0.0",
     "@types/node": "^24.10.4",
     "@types/react": "^19.2.7",
@@ -83,12 +86,16 @@
     "@vitejs/plugin-react": "^5.1.1",
     "convex": "1.31.0",
     "convex-test": "0.0.40",
+    "fallow": "^3.42.0",
     "lucide-react": "^0.562.0",
     "npm-run-all2": "8.0.4",
+    "prettier": "^3.10.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "tsrs": "0.24.0-ts7.1.0-beta",
     "typescript": "^7.0.2",
     "vite": "7.3.6",
+    "vite-plus": "^1.6.0",
     "vitest": "3.2.7"
   },
   "types": "./dist/client/index.d.ts",

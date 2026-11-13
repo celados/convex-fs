@@ -1,5 +1,16 @@
 {
-  "extends": "./tsconfig.json",
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.*", "./src/test.ts"]
+	// The published build: declarations and JS into dist/. `tsconfig.json` is
+	// the checked program, which emits nothing.
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"noEmit": false,
+		"allowImportingTsExtensions": false,
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"rootDir": "./src",
+		"outDir": "./dist"
+	},
+	"include": ["src/**/*"],
+	"exclude": ["src/**/*.test.*", "./src/test.ts"]
 }

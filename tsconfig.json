@@ -1,27 +1,16 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
-    "strict": true,
-
-    "target": "ESNext",
-    "lib": ["ES2021", "dom", "DOM.Iterable"],
-    "jsx": "react-jsx",
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "noErrorTruncation": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-
-    "composite": true,
-    "isolatedModules": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true
-  },
-  "include": ["./src/**/*"]
+	"extends": "@celados/harness/tsconfig/dom.json",
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"target": "ESNext",
+		"lib": ["ES2021", "dom", "DOM.Iterable"],
+		"jsx": "react-jsx",
+		"allowSyntheticDefaultImports": true,
+		"noErrorTruncation": true,
+		// Convex codegen writes `type GenericCtx` into _generated/server.ts and never
+		// uses it; the file is regenerated, so it cannot be fixed here.
+		"noUnusedLocals": false
+	},
+	"include": ["./src/**/*"]
 }

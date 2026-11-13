@@ -1,3 +1,4 @@
+// fallow-ignore-file circular-dependency -- the module glob loads every file, test files included
 /// <reference types="vite/client" />
 import { describe, test, expect } from "vitest";
 import { convexTest } from "convex-test";

@@ -432,7 +432,7 @@ function App() {
       setDragActive(false);
 
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        uploadFiles(e.dataTransfer.files);
+        void uploadFiles(e.dataTransfer.files);
       }
     },
     [uploadFiles],
@@ -447,7 +447,7 @@ function App() {
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files.length > 0) {
-        uploadFiles(e.target.files);
+        void uploadFiles(e.target.files);
         // Reset input so the same file can be selected again
         e.target.value = "";
       }
@@ -466,6 +466,18 @@ function App() {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={handleClick}
+        onKeyDown={(e) => {
+          // A div is not keyboard-operable on its own.
+          if (
+            e.target === e.currentTarget &&
+            (e.key === "Enter" || e.key === " ")
+          ) {
+            e.preventDefault();
+            handleClick();
+          }
+        }}
+        role="button"
+        tabIndex={0}
       >
         <div className="drop-zone-icon">
           <Upload size={48} strokeWidth={1.5} />
@@ -659,8 +671,11 @@ function App() {
               </button>
             </div>
             <div className="modal-body">
-              <label className="modal-label">New path</label>
+              <label className="modal-label" htmlFor="move-path">
+                New path
+              </label>
               <input
+                id="move-path"
                 type="text"
                 className="modal-input"
                 value={moveModal.newPath}
@@ -671,7 +686,7 @@ function App() {
                 autoFocus
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !isMoving) {
-                    handleMove();
+                    void handleMove();
                   }
                 }}
               />
@@ -714,8 +729,11 @@ function App() {
               </button>
             </div>
             <div className="modal-body">
-              <label className="modal-label">New path</label>
+              <label className="modal-label" htmlFor="copy-path">
+                New path
+              </label>
               <input
+                id="copy-path"
                 type="text"
                 className="modal-input"
                 value={copyModal.newPath}
@@ -726,7 +744,7 @@ function App() {
                 autoFocus
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !isCopying) {
-                    handleCopy();
+                    void handleCopy();
                   }
                 }}
               />
@@ -813,10 +831,11 @@ function App() {
               </button>
             </div>
             <div className="modal-body">
-              <label className="modal-label">
+              <label className="modal-label" htmlFor="expire-seconds">
                 Expires in (seconds, 5-3600)
               </label>
               <input
+                id="expire-seconds"
                 type="number"
                 className="modal-input"
                 value={expireModal.seconds}
@@ -829,7 +848,7 @@ function App() {
                 autoFocus
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !isSettingExpiration) {
-                    handleSetExpiration();
+                    void handleSetExpiration();
                   }
                 }}
               />

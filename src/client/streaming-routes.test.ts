@@ -107,9 +107,7 @@ describe("registerRoutes upload streaming", () => {
         AccessKey: "key",
         "Content-Type": "application/octet-stream",
       });
-      expect((init?.headers as Record<string, string>)["Content-Length"]).toBe(
-        undefined,
-      );
+      expect(new Headers(init?.headers).get("Content-Length")).toBeNull();
       expect(
         new Uint8Array(
           await new Response(init?.body as BodyInit).arrayBuffer(),

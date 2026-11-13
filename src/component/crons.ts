@@ -4,7 +4,7 @@ import { internal } from "./_generated/api.js";
 const crons = cronJobs();
 
 /**
- * UGC: GC expired uploads every hour at :00.
+ * UGC: GC expired uploads every hour at :10.
  *
  * Cleans up upload records where the upload has expired
  * (plus a 1-hour grace period). Also deletes the corresponding
@@ -16,7 +16,7 @@ const crons = cronJobs();
  */
 crons.cron(
   "gc-expired-uploads",
-  "0 * * * *", // Every hour at :00
+  "10 * * * *", // Every hour at :10, off the busy top of the hour
   internal.background.gcExpiredUploads,
 );
 

@@ -287,7 +287,7 @@ export const restore = internalMutation({
 
     // 2. Increment refCount
     const now = Date.now();
-    await ctx.db.patch(blob._id, {
+    await ctx.db.patch("blobs", blob._id, {
       refCount: blob.refCount + 1,
       updatedAt: now,
     });

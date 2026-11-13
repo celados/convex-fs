@@ -111,7 +111,7 @@ export const getDownloadUrl = action({
     extraParams: v.optional(v.record(v.string(), v.string())),
   },
   returns: v.string(),
-  handler: async (ctx, args): Promise<string> => {
+  handler: async (_ctx, args): Promise<string> => {
     const { config, blobId, extraParams } = args;
 
     const store = createBlobStore(config.storage);

@@ -6,6 +6,7 @@ import { fs } from "./fs";
 /**
  * Commit an uploaded file to the filesystem.
  */
+// oxlint-disable-next-line @convex-dev/require-access-control -- example app: the gallery is public on purpose; a real app identifies the caller first
 export const commitFile = mutation({
   args: {
     blobId: v.string(),
@@ -27,6 +28,7 @@ export const commitFile = mutation({
  * List files with pagination.
  * Compatible with usePaginatedQuery from convex-fs/react.
  */
+// oxlint-disable-next-line @convex-dev/require-access-control -- example app: the gallery is public on purpose; a real app identifies the caller first
 export const listFiles = query({
   args: {
     paginationOpts: paginationOptsValidator,
@@ -41,6 +43,7 @@ export const listFiles = query({
 /**
  * Move a file to a new path.
  */
+// oxlint-disable-next-line @convex-dev/require-access-control -- example app: the gallery is public on purpose; a real app identifies the caller first
 export const moveFile = mutation({
   args: {
     sourcePath: v.string(),
@@ -54,6 +57,7 @@ export const moveFile = mutation({
 /**
  * Copy a file to a new path.
  */
+// oxlint-disable-next-line @convex-dev/require-access-control -- example app: the gallery is public on purpose; a real app identifies the caller first
 export const copyFile = mutation({
   args: {
     sourcePath: v.string(),
@@ -67,6 +71,7 @@ export const copyFile = mutation({
 /**
  * Delete a file.
  */
+// oxlint-disable-next-line @convex-dev/require-access-control -- example app: the gallery is public on purpose; a real app identifies the caller first
 export const deleteFile = mutation({
   args: {
     path: v.string(),
@@ -80,6 +85,7 @@ export const deleteFile = mutation({
  * Set expiration on a file.
  * The file will be automatically deleted after the specified number of seconds.
  */
+// oxlint-disable-next-line @convex-dev/require-access-control -- example app: the gallery is public on purpose; a real app identifies the caller first
 export const setExpiration = mutation({
   args: {
     path: v.string(),

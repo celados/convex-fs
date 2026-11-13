@@ -108,7 +108,7 @@ export const commitFiles = mutation({
       if (existingFile) {
         // Update existing file to point to new blob
         // Attributes are replaced (cleared if not specified, as if the old file was deleted first)
-        await ctx.db.patch(existingFile._id, {
+        await ctx.db.patch("files", existingFile._id, {
           blobId: file.blobId,
           attributes: file.attributes,
         });
@@ -119,7 +119,7 @@ export const commitFiles = mutation({
           .withIndex("blobId", (q) => q.eq("blobId", existingFile.blobId))
           .unique();
         if (oldBlob) {
-          await ctx.db.patch(oldBlob._id, {
+          await ctx.db.patch("blobs", oldBlob._id, {
             refCount: oldBlob.refCount - 1,
             updatedAt: now,
           });
@@ -139,7 +139,7 @@ export const commitFiles = mutation({
         .withIndex("blobId", (q) => q.eq("blobId", file.blobId))
         .unique();
       if (upload) {
-        await ctx.db.delete(upload._id);
+        await ctx.db.delete("uploads", upload._id);
       }
     }
 
@@ -260,7 +260,7 @@ async function applyOperation(
 
     if (destFile) {
       // Delete dest file record
-      await ctx.db.delete(destFile._id);
+      await ctx.db.delete("files", destFile._id);
 
       // Decrement refCount on dest blob
       const destBlob = await ctx.db
@@ -269,7 +269,7 @@ async function applyOperation(
         .unique();
 
       if (destBlob) {
-        await ctx.db.patch(destBlob._id, {
+        await ctx.db.patch("blobs", destBlob._id, {
           refCount: destBlob.refCount - 1,
           updatedAt: now,
         });
@@ -278,7 +278,7 @@ async function applyOperation(
 
     // Update source file's path to dest and clear attributes
     // (attributes are path-specific, not preserved on move)
-    await ctx.db.patch(sourceFile._id, {
+    await ctx.db.patch("files", sourceFile._id, {
       path: op.dest.path,
       attributes: undefined,
     });
@@ -290,7 +290,7 @@ async function applyOperation(
       .unique();
 
     if (sourceBlob) {
-      await ctx.db.patch(sourceBlob._id, {
+      await ctx.db.patch("blobs", sourceBlob._id, {
         refCount: sourceBlob.refCount + 1,
         updatedAt: now,
       });
@@ -307,7 +307,7 @@ async function applyOperation(
     if (destFile) {
       // Dest exists - overwrite (validated above, or expired file being replaced)
       // Update dest file to point to source blob and clear attributes
-      await ctx.db.patch(destFile._id, {
+      await ctx.db.patch("files", destFile._id, {
         blobId: sourceFile.blobId,
         attributes: undefined,
       });
@@ -319,7 +319,7 @@ async function applyOperation(
         .unique();
 
       if (destBlob) {
-        await ctx.db.patch(destBlob._id, {
+        await ctx.db.patch("blobs", destBlob._id, {
           refCount: destBlob.refCount - 1,
           updatedAt: now,
         });
@@ -352,7 +352,7 @@ async function applyOperation(
     // Only set attributes if there's something to set, otherwise clear
     const finalAttrs = Object.keys(newAttrs).length > 0 ? newAttrs : undefined;
 
-    await ctx.db.patch(sourceFile._id, {
+    await ctx.db.patch("files", sourceFile._id, {
       attributes: finalAttrs,
     });
   }

@@ -1,0 +1,24 @@
+{
+	"$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+	"entry": [
+		// The example app's Vite entry, named by example/index.html.
+		"example/src/main.tsx",
+		// Loaded by `harness typecheck`.
+		"harness.config.ts",
+		// The package's public surface (package.json `exports`, built from src).
+		"src/{client,react,blobstore}/index.ts",
+	],
+	"ignorePatterns": ["docs/**", "**/_generated/**"],
+	// Public type surface of an upstream fork: the component's own types and
+	// the client's re-exports are consumed by apps through generated files.
+	"ignoreExports": [
+		{ "file": "src/component/types.ts", "exports": ["*"] },
+		{ "file": "src/component/lib.ts", "exports": ["*"] },
+		{ "file": "src/client/types.ts", "exports": ["*"] },
+		// Both `import { ConvexFS }` and `import ConvexFS` are documented.
+		{ "file": "src/client/index.ts", "exports": ["default"] },
+	],
+	// `lucide-react` and `react-dom` are the example app's, not the package's.
+	"ignoreDependencies": ["lucide-react", "react-dom"],
+	"ignoreBinaries": ["(bun"],
+}

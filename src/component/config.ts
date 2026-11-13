@@ -94,7 +94,7 @@ export const ensureConfigStored = internalMutation({
       }
       // Only update if there are actual changes (deep equal, ignoring undefined fields in newValue)
       if (existing.checksum !== newChecksum) {
-        await ctx.db.patch(existing._id, {
+        await ctx.db.patch("config", existing._id, {
           value: newValue,
           checksum: newChecksum,
         });

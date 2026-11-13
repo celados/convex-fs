@@ -33,41 +33,46 @@ Do not move blob I/O back into `src/component/`. If you need bytes, do it in
 ## Build/Lint/Test Commands
 
 ```bash
-# Install dependencies
-npm install
+# Install dependencies (@celados/harness comes from npm.celados.com: .npmrc
+# reads its token from CELADOS_NPM_TOKEN)
+bun install
 
 # Development (runs backend, frontend, and build watcher)
-npm run dev
+bun run dev
 
 # Build TypeScript
-npm run build
-npm run build:clean    # Clean rebuild with codegen
+bun run build
+bun run build:clean    # Clean rebuild with codegen
 
-# Type checking (covers root, example/, and example/convex/)
-npm run typecheck
+# Everything CI runs: build, lint, type check, dead code, tests
+bun run check
 
-# Linting
+# Type checking (covers root, example/, and example/convex/; tsrs via @celados/harness)
+bun run typecheck
+
+# Linting (Vite+ / Oxlint through @celados/harness; formatting is not part of it)
+vp lint
 
 # Run all tests with type checking
-npm test
+bun run test
 
 # Run tests in watch mode
-npm run test:watch
+bun run test:watch
 
 # Run a single test file
-npx vitest run src/blobstore/extension.test.ts
+bunx vitest run src/blobstore/extension.test.ts
 
 # Run tests matching a pattern
-npx vitest run -t "put"
+bunx vitest run -t "put"
 
 # Run a single test by name
-npx vitest run -t "maps common media types"
+bunx vitest run -t "maps common media types"
 
 # Debug tests
-npm run test:debug
+bun run test:debug
 
 # Regenerate Convex types
-npx convex dev --once
+bunx convex dev --once
 ```
 
 ## Code Style Guidelines
@@ -76,7 +81,8 @@ npx convex dev --once
 
 - **Prettier** with trailing commas (`"trailingComma": "all"`)
 - **2 spaces** for indentation (TypeScript default)
-- Run `npx prettier -w <file>` to format
+- Run `bunx prettier -w <file>` to format (Prettier stays the formatter so merges
+  from the upstream fork stay conflict-free; Oxfmt is off here)
 
 ### Imports
 
@@ -352,7 +358,7 @@ are the bytes removed. That window is what makes undelete possible.
 
 | Job                      | Schedule     | Removes                                                                | Honors `freezeGc` |
 | ------------------------ | ------------ | ---------------------------------------------------------------------- | ----------------- |
-| `gcExpiredUploads` (UGC) | hourly `:00` | uncommitted `uploads` past their 4h TTL, plus their bytes              | yes               |
+| `gcExpiredUploads` (UGC) | hourly `:10` | uncommitted `uploads` past their 4h TTL, plus their bytes              | yes               |
 | `gcOrphanedBlobs` (BGC)  | hourly `:20` | `blobs` at `refCount: 0` older than the grace period, plus their bytes | yes               |
 | `gcExpiredFiles` (FGC)   | every 15s    | `files` past `attributes.expiresAt` (metadata only)                    | **no**            |
 
@@ -407,5 +413,5 @@ than throwing bare `Error`s from op handlers.
 ### Modifying schema
 
 1. Update `src/component/schema.ts`
-2. Run `npx convex dev --once` to regenerate types
+2. Run `bunx convex dev --once` to regenerate types
 3. Clear existing data if schema change is incompatible

@@ -24,7 +24,7 @@ export async function deleteFileAndDecrefBlob(
   now: number,
 ): Promise<void> {
   // Delete file record
-  await ctx.db.delete(fileId);
+  await ctx.db.delete("files", fileId);
 
   // Decrement refCount on blob
   const blob = await ctx.db
@@ -33,7 +33,7 @@ export async function deleteFileAndDecrefBlob(
     .unique();
 
   if (blob) {
-    await ctx.db.patch(blob._id, {
+    await ctx.db.patch("blobs", blob._id, {
       refCount: blob.refCount - 1,
       updatedAt: now,
     });
