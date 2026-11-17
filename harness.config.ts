@@ -1,6 +1,12 @@
 import { defineHarnessConfig } from '@celados/harness'
 
 export default defineHarnessConfig({
+	doctor: {
+		allowLegacy: {
+			prettier:
+				'upstream fork: Prettier stays the formatter so merges from upstream stay conflict-free (AGENTS.md)',
+		},
+	},
 	typecheck: {
 		exclude: {
 			'tsconfig.test.json':

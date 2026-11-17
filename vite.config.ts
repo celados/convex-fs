@@ -17,7 +17,7 @@ export default defineConfig(
 		],
 		// Upstream fork: formatting stays Prettier's (`bunx prettier`, see
 		// AGENTS.md) so merges from upstream stay conflict-free.
-		fmt: { ignorePatterns: ['**'] },
+		fmt: false,
 		// `vp check` stops on a formatter with no target file, so the hook and
 		// `check` run lint only.
 		staged: { '*': 'vp lint --fix' },
