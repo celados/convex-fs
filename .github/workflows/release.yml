@@ -33,6 +33,14 @@ jobs:
         with:
           bun-version: latest
 
+      # The celados-linux image has no Node. Without it `bun run` stands Bun in
+      # for vitest's `#!/usr/bin/env node`, and Bun's Blob reports a different
+      # content type than Node's (GitHub-hosted images ship Node).
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
       - name: Resolve version tag
         id: version
         run: |
