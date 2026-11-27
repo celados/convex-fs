@@ -22,6 +22,8 @@ jobs:
     name: Build dist snapshot and tag
     runs-on: celados-linux
     timeout-minutes: 20
+    env:
+      CELADOS_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -76,11 +78,10 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "released=true" >> "$GITHUB_OUTPUT"
 
+      - uses: celados/.github/actions/setup-celados-npm@setup-celados-npm-v1
+        if: steps.version.outputs.released == 'true'
       - name: Install dependencies
         if: steps.version.outputs.released == 'true'
-        env:
-          # @celados/harness comes from npm.celados.com (.npmrc).
-          CELADOS_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: bun install --frozen-lockfile --ignore-scripts
 
       - name: Check source
