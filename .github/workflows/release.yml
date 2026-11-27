@@ -20,7 +20,8 @@ permissions:
 jobs:
   tag:
     name: Build dist snapshot and tag
-    runs-on: ubuntu-latest
+    runs-on: celados-linux
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v6
